@@ -1,11 +1,16 @@
 {
-  "app_id": 9000,
-  "title": "My Awesome E-Com Plus App",
-  "slug": "my-awesome-ecom-plus-app",
+  "app_id": 130483,
+  "title": "Ponto Market",
+  "slug": "ponto-market",
   "type": "external",
   "state": "active",
   "authentication": true,
-  "modules": {},
+  "modules": {
+    "apply_discount": {
+      "enabled": true,
+      "endpoint": "https://us-central1-pontomarket-ecomplus.cloudfunctions.net/app/ecom/modules/apply-discount"
+    }
+  },
   "auth_scope": {
     "stores/me": [
       "GET"
@@ -26,6 +31,35 @@
     "products/price": [],
     "products/variations/price": []
   },
-  "auth_callback_uri": "https://us-central1-ecom-app-boilerplate.cloudfunctions.net/app/ecom/auth-callback",
+  "admin_settings": {
+    "instancia": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "format": "uri",
+        "title": "Instância",
+        "description": "Consulte a PontoMarket para obter a INSTÂNCIA da sua aplicação"
+      },
+      "hide": true
+    },
+    "id": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "description": "Consulte a PontoMarket para obter o ID da sua aplicação"
+      },
+      "hide": true
+    },
+    "token": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "title": "Token",
+        "description": "Consulte a PontoMarket para obter o TOKEN da sua aplicação"
+      },
+      "hide": true
+    }
+  },
+  "auth_callback_uri": "https://us-central1-pontomarket-ecomplus.cloudfunctions.net/app/ecom/auth-callback",
   "version": "1.0.0"
 }
