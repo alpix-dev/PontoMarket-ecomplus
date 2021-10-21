@@ -15,4 +15,5 @@ exports.post = ({ appSdk, admin }, req, res) => {
       .catch(console.error)
   }
   res.send({})
+  
 }
