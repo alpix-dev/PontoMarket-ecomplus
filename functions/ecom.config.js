@@ -7,8 +7,8 @@
 
 const app = {
   app_id: 130483,
-  title: 'My Awesome E-Com Plus App',
-  slug: 'my-awesome-app',
+  title: 'Ponto Market',
+  slug: 'ponto-market',
   type: 'external',
   state: 'active',
   authentication: true,
@@ -28,7 +28,7 @@ const app = {
      * Triggered to validate and apply discount value, must return discount and conditions.
      * Start editing `routes/ecom/modules/apply-discount.js`
      */
-    // apply_discount:       { enabled: true },
+    apply_discount:       { enabled: true },
 
     /**
      * Triggered when listing payments, must return available payment methods.
@@ -138,6 +138,33 @@ const app = {
   },
   
   admin_settings: {
+    "instancia": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "format": "uri",
+        "title": "Instância",
+        "description": "Consulte a PontoMarket para obter a INSTÂNCIA da sua aplicação"
+      },
+      "hide": true
+    },
+    "id": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "description": "Consulte a PontoMarket para obter o ID da sua aplicação"
+      },
+      "hide": true
+    },
+    "token": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "title": "Token",
+        "description": "Consulte a PontoMarket para obter o TOKEN da sua aplicação"
+      },
+      "hide": true
+    }
     /**
      * JSON schema based fields to be configured by merchant and saved to app `data` / `hidden_data`, such as:
      
