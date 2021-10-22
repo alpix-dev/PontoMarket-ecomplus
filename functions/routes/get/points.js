@@ -18,6 +18,7 @@ const getAppData = require('./../../lib/store-api/get-app-data')
 //   res.send({})
 // })
 exports.post = ({ appSdk, admin }, req, res) => {  
+  const { storeId } = req
   getAppData({appSdk, storeId}).then(appData => {
     res.send(appData);
 
