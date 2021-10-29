@@ -1,4 +1,5 @@
 const axios = require('axios')
+const FormData = require('form-data');
 const getAppData = require('./../../lib/store-api/get-app-data')
 
 
@@ -36,7 +37,7 @@ exports.post = ({ appSdk }, req, res) => {
       //   res.send(err)        
       // })
       try {
-        let clubeShow = await axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', formData , {
+        let clubeShow = axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', formData , {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
