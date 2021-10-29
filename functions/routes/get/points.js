@@ -19,8 +19,23 @@ const getAppData = require('./../../lib/store-api/get-app-data')
 // })
 exports.post = ({ appSdk }, req, res) => {  
   const { storeId } = req.body
-  getAppData({appSdk, storeId}).then(appData => {
-    res.send(appData);
+  getAppData({appSdk, storeId})
+  .then(appData => {
+    //res.send(appData);
+    axios.post(appData.data.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
+        id : appData.data.id,
+        token : appData.data.token,
+        cmd : "get_points",
+        cpf : req.body.cpf
+        // id_location: mail.replyTo
+    }).then(pmarketResponse => {
+      res.send(pmarketResponse)
+    }).catch(err =>{
+      res.send(err)  
+    })
 
+  })
+  .catch(err => {
+    res.send(err)
   })
 }
