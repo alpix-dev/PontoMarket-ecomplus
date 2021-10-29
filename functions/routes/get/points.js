@@ -22,7 +22,7 @@ exports.post = ({ appSdk }, req, res) => {
   getAppData({appSdk, storeId})
   .then(appData => {
     console.log('entrou 0')
-    //res.send(appData);
+    res.send(appData);
     //console.log(appData)
     axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
         id : appData.id,
