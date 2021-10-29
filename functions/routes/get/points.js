@@ -6,7 +6,7 @@ exports.post = ({ appSdk }, req, res) => {
   const { storeId } = req.body
   getAppData({appSdk, storeId}).then(appData => {
     if(appData.instancia){
-      axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
+      let data = {
         id : appData.id,
         token : appData.token,
         cmd : "get_points",
@@ -15,14 +15,16 @@ exports.post = ({ appSdk }, req, res) => {
         // token : token,
         // cmd : cmd,
         cpf : "43335443608"
-      },
-      {
+      }
+      axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', data , {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
       .then(({data}) => {res.send(data)})
-      .catch(console.error)
+      .catch((err) => {
+        {res.send(err)}
+      })
     }
   })
   .catch(err => {
