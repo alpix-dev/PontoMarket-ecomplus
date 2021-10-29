@@ -3,7 +3,7 @@ const getAppData = require('./../../lib/store-api/get-app-data')
 
 
 exports.post = ({ appSdk }, req, res) => {  
-  const { storeId,id, token, cmd, cpf } = req.body
+  const { storeId } = req.body
   getAppData({appSdk, storeId}).then(appData => {
     if(appData.instancia){
       return axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
