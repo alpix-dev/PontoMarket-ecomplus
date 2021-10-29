@@ -22,6 +22,7 @@ exports.post = ({ appSdk }, req, res) => {
   getAppData({appSdk, storeId})
   .then(appData => {
     //res.send(appData);
+    console.log(appData)
     axios.post(appData.data.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
         id : appData.data.id,
         token : appData.data.token,
@@ -29,8 +30,10 @@ exports.post = ({ appSdk }, req, res) => {
         cpf : req.body.cpf
         // id_location: mail.replyTo
     }).then(pmarketResponse => {
+      console.log(pmarketResponse)
       res.send(pmarketResponse)
     }).catch(err =>{
+      console.log(err)
       res.send(err)  
     })
 
