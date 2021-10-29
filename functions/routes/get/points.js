@@ -16,9 +16,10 @@ exports.post = ({ appSdk }, req, res) => {
         // cmd : cmd,
         cpf : "43335443608"
       }
+      console.log(data)
       axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', data , {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data'
         }
       })
       .then(({data}) => {res.send(data)})
