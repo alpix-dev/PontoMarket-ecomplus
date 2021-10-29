@@ -41,6 +41,7 @@ exports.post = ({ appSdk }, req, res) => {
       data.append('token', appData.token)
       data.append('cmd', "get_points")
       data.append('cpf', "43335443608")
+      data.append('id_location', "")
       const url = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1`
       console.log(JSON.stringify({ storeId, url, data }))
       axios.post(url, data, {
