@@ -1,5 +1,5 @@
 const axios = require('axios')
-const FormData = require('form-data');
+const FormData = require('form-data')
 const getAppData = require('./../../lib/store-api/get-app-data')
 
 
