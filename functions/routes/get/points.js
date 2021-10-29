@@ -22,7 +22,7 @@ exports.post = ({ appSdk }, req, res) => {
       formData.append('cmd', "get_points")
       formData.append('cpf', "43335443608")
       
-      axios({
+      return axios({
         method:"post",
         url: appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1',
         data: formData,
