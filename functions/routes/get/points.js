@@ -23,9 +23,9 @@ exports.post = ({ appSdk }, req, res) => {
   .then(appData => {
     //res.send(appData);
     console.log(appData)
-    axios.post(appData.data.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
-        id : appData.data.id,
-        token : appData.data.token,
+    axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
+        id : appData.id,
+        token : appData.token,
         cmd : "get_points",
         cpf : req.body.cpf
         // id_location: mail.replyTo
