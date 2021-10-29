@@ -27,7 +27,7 @@ exports.post = ({ appSdk }, req, res) => {
         url: appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1',
         data: formData,
         headers: {'Content-Type': 'multipart/form-data'}
-      }).then(({data}) => {res.send(data)})
+      }).then((data) => {res.send(data)})
       .catch((err) => {
         {res.send(err)}
       })
