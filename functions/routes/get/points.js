@@ -7,13 +7,13 @@ exports.post = ({ appSdk }, req, res) => {
   getAppData({appSdk, storeId}).then(appData => {
     if(appData.instancia){
       return axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
-        // id : appData.id,
-        // token : appData.token,
-        // cmd : "get_points",
+        id : appData.id,
+        token : appData.token,
+        cmd : "get_points",
         // cpf : req.body.cpf
-        id : id,
-        token : token,
-        cmd : cmd,
+        // id : id,
+        // token : token,
+        // cmd : cmd,
         cpf : "43335443608"
       },
       {
