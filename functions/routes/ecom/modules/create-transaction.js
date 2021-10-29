@@ -14,32 +14,28 @@ exports.post = ({ appSdk, admin }, req, res) => {
 
   const { params, application } = req.body
   const { storeId } = req
-  // merge all app options configured by merchant
   const appData = Object.assign({}, application.data, application.hidden_data)
-  // setup required `transaction` response object
   const transaction = {}
 
-  // indicates whether the buyer should be redirected to payment link right after checkout
-  let redirectToPayment = false
+  const orderId = params.order_id
+  const { amount, buyer, payer, to, items } = params
 
-  /**
-   * Do the stuff here, call external web service or just fill the `transaction` object
-   * according to the `appData` configured options for the chosen payment method.
-   */
-
-  // WIP:
-  switch (params.payment_method.code) {
-    case 'credit_card':
-      // you may need to handle card hash and create transaction on gateway API
-      break
-    case 'banking_billet':
-      // create new "Boleto bancário"
-      break
-    case 'online_debit':
-      redirectToPayment = true
-      break
-    default:
-      break
+  if(clubeshowStorefrontOfferId){
+    //getAppData({appSdk, storeId}).then(appData => {
+    if(appData.instancia){
+      axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
+        // id : appData.id,
+        // token : appData.token,
+        // cmd : "get_points",
+        // cpf : req.body.cpf
+        id : "alpix",
+        token : "t3st3Integracao",
+        cmd : "points_redemption",
+        cpf : buyer.doc_number,
+        order: orderId,
+        id_prize: clubeshowStorefrontOfferId
+      })      
+    }    
   }
 
   res.send({
