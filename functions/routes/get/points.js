@@ -15,6 +15,11 @@ exports.post = ({ appSdk }, req, res) => {
         token : token,
         cmd : cmd,
         cpf : "43335443608"
+      },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       })
       .then(({data}) => {res.send(data)})
       .catch(console.error)
