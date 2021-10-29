@@ -22,32 +22,34 @@ exports.post = ({ appSdk }, req, res) => {
       formData.append('cmd', "get_points")
       formData.append('cpf', "43335443608")
       
-      return axios({
-        method:"post",
-        url: appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1',
-        data: formData,
-        headers: {'Content-Type': 'multipart/form-data'}
-      }).then((response) => {
-        console.log(response)
-        res.send(response)
-      })
-      .catch((err) => {
-        console.log(err)
-        res.send(err)        
-      })
-
-      // axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', data , {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data'
-      //   }
+      // return axios({
+      //   method:"post",
+      //   url: appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1',
+      //   data: formData,
+      //   headers: {'Content-Type': 'multipart/form-data'}
+      // }).then((response) => {
+      //   console.log(response)
+      //   res.send(response)
       // })
-      // .then(({data}) => {res.send(data)})
       // .catch((err) => {
-      //   {res.send(err)}
+      //   console.log(err)
+      //   res.send(err)        
       // })
+      try {
+        let clubeShow = await axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', formData , {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        res.send(clubeShow)
+      }catch(e){
+        console.log(e)
+        res.send(e)
+      }     
     }
   })
   .catch(err => {
+    console.log(err)
     res.send(err)
   })
 }
