@@ -21,7 +21,7 @@ exports.post = ({ appSdk }, req, res) => {
   const { storeId } = req.body
   getAppData({appSdk, storeId}).then(appData => {
     const response = {}
-    const appData = Object.assign({}, application.data, application.hidden_data)
+    //const appData = Object.assign({}, application.data, application.hidden_data)
     if(appData.instancia){
       return axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
         id : appData.id,
