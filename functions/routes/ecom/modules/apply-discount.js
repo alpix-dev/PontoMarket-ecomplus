@@ -24,6 +24,37 @@ exports.post = ({ appSdk, admin }, req, res) => {
     // should match discount by coupon code
   }
 
+  getAppData({appSdk, storeId}).then(appData => {
+    if(appData.instancia){
+      axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
+        // id : appData.id,
+        // token : appData.token,
+        // cmd : "get_points",
+        // cpf : req.body.cpf
+        id : "alpix",
+        token : "t3st3Integracao",
+        cmd : "get_points",
+        cpf : "43335443608"
+      })
+      .then(({data}) => {
+        let offer = data.prize_list.filter(el => el.id_prize == clubeshowStorefrontOfferId)
+        if(offer[0].prize_value > 0){
+          response.discount_rule = {
+            label: offer[0].name,
+            extra_discount: {
+              value: offer[0].prize_value,
+              flags: ['clube-show']
+            }
+          }
+        }
+      })
+      .catch(console.error)
+    }
+  })
+  .catch(err => {
+    res.send(err)
+  })
+
   /* DO THE STUFF HERE TO FILL RESPONSE OBJECT WITH DISCOUNT OPTIONS */
 
   /**
