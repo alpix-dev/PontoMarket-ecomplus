@@ -24,10 +24,14 @@ exports.post = ({ appSdk }, req, res) => {
     //const appData = Object.assign({}, application.data, application.hidden_data)
     if(appData.instancia){
       return axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
-        id : appData.id,
-        token : appData.token,
+        // id : appData.id,
+        // token : appData.token,
+        // cmd : "get_points",
+        // cpf : req.body.cpf
+        id : "alpix",
+        token : "t3st3Integracao",
         cmd : "get_points",
-        cpf : req.body.cpf
+        cpf : "43335443608"
       }).then(({data}) => {res.send(data)})
       .catch(console.error)
     }
