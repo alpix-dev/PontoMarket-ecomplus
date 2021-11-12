@@ -19,20 +19,21 @@ exports.post = ({ appSdk }, req, res) => {
       //    'Content-Type': 'multipart/form-data'
       //   }
       // })
-      const postData = decodeURIComponent(JSON.stringify({
-          id: appData.id,
-          token: appData.token,
-          cmd : 'get_points',
-          cpf : '43335443608',
-          id_location : '',
-      }));
+      const postData = {
+        id: appData.id,
+        token: appData.token,
+        cmd : 'get_points',
+        cpf : '43335443608',
+        id_location : '',
+    }
+      const postDataBytes = decodeURIComponent(JSON.stringify(postData));
       
       const url = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1`
       console.log(JSON.stringify({ storeId, url, postData }))
-      axios.post(url,{
+      axios.post(url, postData,{
         headers: {
          'Content-Type': 'multipart/form-data',
-         'Content-Length': Buffer.byteLength(postData),
+         'Content-Length': Buffer.byteLength(postDataBytes),
         }
       })
         .then(({ data }) => {
