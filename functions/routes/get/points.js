@@ -19,7 +19,7 @@ exports.post = ({ appSdk }, req, res) => {
       //    'Content-Type': 'multipart/form-data'
       //   }
       // })
-      const postData = decodeURIComponent(qs.stringify({
+      const postData = decodeURIComponent(JSON.stringify({
           id: appData.id,
           token: appData.token,
           cmd : 'get_points',
