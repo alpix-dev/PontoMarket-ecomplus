@@ -15,9 +15,9 @@ exports.post = ({ appSdk }, req, res) => {
       const url = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1`
       console.log(JSON.stringify({ storeId, url, data }))
       axios.post(url, data, {
-        //headers: {
-//          'Content-Type': 'multipart/form-data'
-        //}
+        headers: {
+         'enctype': 'multipart/form-data'
+        }
       })
         .then(({ data }) => {
           res.send(data)
