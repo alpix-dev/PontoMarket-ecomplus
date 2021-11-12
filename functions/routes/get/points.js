@@ -16,7 +16,7 @@ exports.post = ({ appSdk }, req, res) => {
       console.log(JSON.stringify({ storeId, url, data }))
       axios.post(url, data, {
         headers: {
-         'enctype': 'multipart/form-data'
+         'Content-Type': 'multipart/form-data'
         }
       })
         .then(({ data }) => {
