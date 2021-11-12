@@ -16,7 +16,7 @@ exports.post = ({ appSdk }, req, res) => {
       console.log(JSON.stringify({ storeId, url, data }))
       axios.post(url, data, {
         headers: {
-         'Content-Type': 'application/x-www-form-urlencoded'
+         'Content-Type': 'multipart/form-data'
         }
       })
     //   const postData = {
