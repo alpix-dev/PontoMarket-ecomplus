@@ -28,7 +28,8 @@ exports.post = ({ appSdk, admin }, req, res) => {
         const prizeId = documentSnapshot.get('selected_prize_id')
         if (prizeId) {
           // Double check discount available on CRM
-          const crmUrl = documentSnapshot.get('crm_url')
+          const docNumber = documentSnapshot.get('doc_number')
+          const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=${docNumber}&id_location=`
           return axios.get(crmUrl)
             .then(({ data }) => {
               const prize = data.prize_list?.find(prize => (prize.id_prize == prizeId))
