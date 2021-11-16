@@ -30,7 +30,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
       axios.get(url)
       .then(({ data }) => {
         //res.send(data)
-        let offer = data.prize_list.filter(el => el.id_prize == clubeshowStorefrontOfferId)
+        let offer = data.prize_list.filter(el => el.id_prize == params.discount_coupon)
         if(offer[0].prize_value > 0){
           response.discount_rule = {
             label: offer[0].name,
