@@ -26,17 +26,10 @@ exports.post = ({ appSdk, admin }, req, res) => {
 
   getAppData({appSdk, storeId}).then(appData => {
     if(appData.instancia){
-      axios.post(appData.instancia + '/cgi-bin/webworks/bin/sharkview_api_v1', {
-        // id : appData.id,
-        // token : appData.token,
-        // cmd : "get_points",
-        // cpf : req.body.cpf
-        id : "alpix",
-        token : "t3st3Integracao",
-        cmd : "get_points",
-        cpf : "43335443608"
-      })
-      .then(({data}) => {
+      const url = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=43335443608&id_location=`
+      axios.get(url)
+      .then(({ data }) => {
+        //res.send(data)
         let offer = data.prize_list.filter(el => el.id_prize == clubeshowStorefrontOfferId)
         if(offer[0].prize_value > 0){
           response.discount_rule = {
@@ -48,7 +41,14 @@ exports.post = ({ appSdk, admin }, req, res) => {
           }
         }
       })
-      .catch(console.error)
+      .catch(err => {
+        console.log(JSON.stringify({
+          url,
+          resStatus: err.response?.status,
+          resData: err.response?.data
+        }))
+        res.send(err.message)
+      })
     }
   })
   .catch(err => {
