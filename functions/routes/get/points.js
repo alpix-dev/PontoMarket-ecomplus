@@ -6,7 +6,7 @@ exports.post = ({ appSdk }, req, res) => {
   const { storeId } = req.body
   getAppData({ appSdk, storeId }).then(appData => {
     if (appData.instancia) {
-      const url = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=43335443608&id_location=`
+      const url = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=43335443608&id_location=${appData.location_id}`
       axios.get(url)
         .then(({ data }) => {
           res.send(data)

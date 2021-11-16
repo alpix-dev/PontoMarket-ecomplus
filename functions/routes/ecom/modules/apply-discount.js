@@ -29,7 +29,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
         if (prizeId) {
           // Double check discount available on CRM
           const docNumber = documentSnapshot.get('doc_number')
-          const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=${docNumber}&id_location=`
+          const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=${docNumber}&id_location=${appData.location_id}`
           return axios.get(crmUrl)
             .then(({ data }) => {
               const prize = data.prize_list?.find(prize => (prize.id_prize == prizeId))
