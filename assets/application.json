@@ -58,15 +58,6 @@
         "description": "Consulte a PontoMarket para obter o TOKEN da sua aplicação"
       },
       "hide": true
-    },
-    "location_id": {
-      "schema": {
-        "type": "string",
-        "maxLength": 255,
-        "title": "ID de Localização",
-        "description": "Consulte a PontoMarket para obter o location_id da sua aplicação"
-      },
-      "hide": true
     }
   },
   "auth_callback_uri": "https://us-central1-pontomarket-ecomplus.cloudfunctions.net/app/ecom/auth-callback",
