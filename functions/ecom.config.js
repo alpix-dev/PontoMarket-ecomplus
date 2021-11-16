@@ -164,6 +164,15 @@ const app = {
         "description": "Consulte a PontoMarket para obter o TOKEN da sua aplicação"
       },
       "hide": true
+    },
+    "location_id": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "title": "ID de Localização",
+        "description": "Consulte a PontoMarket para obter o location_id da sua aplicação"
+      },
+      "hide": true
     }
     /**
      * JSON schema based fields to be configured by merchant and saved to app `data` / `hidden_data`, such as:
