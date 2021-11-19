@@ -10,10 +10,7 @@ exports.post = ({ appSdk }, req, res) => {
       console.log(url)
       axios.get(url)
         .then(({ data }) => {
-          admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).set({
-            selected_prize_id : params.prize_id,
-            doc_number: params.customer.doc_number
-          }).then(function(result){
+          admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get().then(function(result){
             res.send({pm: data, fb: result})
           })
           
