@@ -20,7 +20,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
   console.log(params)
   if (params.customer?._id) {
     // Should match selected discount by customer ID
-    return admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get(documentSnapshot => {
+    admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get(documentSnapshot => {
       if (documentSnapshot.exist) {
         const prizeId = documentSnapshot.get('selected_prize_id')
         if (prizeId) {
