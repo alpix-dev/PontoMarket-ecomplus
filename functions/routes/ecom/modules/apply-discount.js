@@ -18,6 +18,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
   const appData = Object.assign({}, application.data, application.hidden_data)
 
   //console.log(params)
+  console.log(params.customer)
   if (params.customer?._id) {
     // Should match selected discount by customer ID
     // admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get(documentSnapshot => {
@@ -61,10 +62,10 @@ exports.post = ({ appSdk, admin }, req, res) => {
     //   }
     //   res.send(response)
     // })
+    
     admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
     .then(function(documentSnapshot){
-      if (documentSnapshot.exist) {
-        console.log(documentSnapshot)
+      console.log(documentSnapshot)
         const prizeId = documentSnapshot.get('selected_prize_id')
         if (prizeId) {
           // Double check discount available on CRM
@@ -99,8 +100,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 message: err.message
               })
             })
-        }
-      }
+        }      
     })
   }
 
