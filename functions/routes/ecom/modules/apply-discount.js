@@ -22,6 +22,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
     // Should match selected discount by customer ID
     admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get(documentSnapshot => {
       if (documentSnapshot.exist) {
+        console.log(documentSnapshot)
         const prizeId = documentSnapshot.get('selected_prize_id')
         if (prizeId) {
           // Double check discount available on CRM
