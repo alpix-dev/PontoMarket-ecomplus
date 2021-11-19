@@ -11,8 +11,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
    * https://github.com/ecomplus/discounts/blob/master/routes/ecom/modules/apply-discount.js
    */
 
-  const { params, application } = req.body
-  const { storeId } = req
+  const { params, application, storeId } = req.body
   const response = {}
   // merge all app options configured by merchant
   const appData = Object.assign({}, application.data, application.hidden_data)
