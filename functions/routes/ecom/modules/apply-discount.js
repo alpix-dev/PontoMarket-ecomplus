@@ -101,7 +101,6 @@ exports.post = ({ appSdk, admin }, req, res) => {
             })
         }
       }
-      res.send(response)
     })
   }
 
