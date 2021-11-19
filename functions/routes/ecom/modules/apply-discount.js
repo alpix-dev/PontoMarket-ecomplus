@@ -31,8 +31,10 @@ exports.post = ({ appSdk, admin }, req, res) => {
           const docNumber = documentSnapshot.get('doc_number')
           //const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=${docNumber}&id_location=${appData.location_id}`
           const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=43335443608&id_location=${appData.location_id}`
+          console.log(crmUrl)
           axios.get(crmUrl)
             .then(({ data }) => {
+              console.log(data)
               const prize = data.prize_list?.find(prize => (prize.id_prize == prizeId))
               if (prize && prize.prize_value > 0) {
                 response.discount_rule = {
