@@ -103,9 +103,6 @@ exports.post = ({ appSdk, admin }, req, res) => {
       }
       res.send(response)
     })
-    .catch(err => {
-      res.send({error : true})
-    })
   }
 
   /* DO THE STUFF HERE TO FILL RESPONSE OBJECT WITH DISCOUNT OPTIONS */
