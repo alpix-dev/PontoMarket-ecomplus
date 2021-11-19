@@ -2,7 +2,7 @@ const axios = require('axios')
 const FormData = require('form-data')
 const getAppData = require('./../../lib/store-api/get-app-data')
 
-exports.post = ({ appSdk }, req, res) => {  
+exports.post = ({ appSdk, admin }, req, res) => {  
   const { storeId } = req.body
   getAppData({ appSdk, storeId }).then(appData => {
     if (appData.instancia) {
@@ -10,7 +10,8 @@ exports.post = ({ appSdk }, req, res) => {
       console.log(url)
       axios.get(url)
         .then(({ data }) => {
-          admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get().then(function(result){
+          admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
+          .then(function(result){
             res.send({pm: data, fb: result})
           })
           
