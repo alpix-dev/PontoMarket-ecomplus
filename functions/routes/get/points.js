@@ -12,7 +12,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
         .then(({ data }) => {
           admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
           .then(function(result){
-            res.send({pm: data, fb: result})
+            res.send({pm: data, fb: result.data()})
           })
           
         })
