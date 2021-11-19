@@ -25,7 +25,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
   if (params.customer?._id) {
       console.log('--- checkpoint a')
     // Should match selected discount by customer ID
-    return admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get(documentSnapshot => {
+    admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get(documentSnapshot => {
       console.log('--- checkpoint b')
       if (documentSnapshot.exist) {
         console.log('--- checkpoint b 1')
@@ -36,7 +36,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
           const docNumber = documentSnapshot.get('doc_number')
           //const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=${docNumber}&id_location=`
           const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=43335443608&id_location=`
-          return axios.get(crmUrl)
+          axios.get(crmUrl)
             .then(({ data }) => {
               console.log('--- checkpoint c')
               const prize = data.prize_list?.find(prize => (prize.id_prize == prizeId))
