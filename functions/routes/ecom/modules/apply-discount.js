@@ -17,10 +17,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
   // merge all app options configured by merchant
   const appData = Object.assign({}, application.data, application.hidden_data)
 
-  if (appData.available_extra_discount) {
-    response.available_extra_discount = appData.available_extra_discount
-  }
-
+  console.log(params)
   if (params.customer?._id) {
     // Should match selected discount by customer ID
     return admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get(documentSnapshot => {
