@@ -2,11 +2,7 @@ const axios = require('axios')
 const FormData = require('form-data')
 const getAppData = require('./../../lib/store-api/get-app-data')
 
-const admin = require('firebase-admin')
-const functions = require('firebase-functions')
-admin.initializeApp()
-
-exports.post = ({ appSdk }, req, res) => {  
+exports.post = ({ appSdk, admin}, req, res) => {  
   const { storeId } = req.body
   getAppData({ appSdk, storeId }).then(appData => {
     if (appData.instancia) {      
