@@ -6,7 +6,7 @@ exports.post = ({ appSdk, admin}, req, res) => {
   const { storeId, params } = req.body
   getAppData({ appSdk, storeId }).then(appData => {
     if (appData.instancia) {      
-        admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).set({
+        admin.firestore().doc(`prizes/${storeId}_${params.customer.doc_number}`).set({
           selected_prize_id : params.prize_id,
           doc_number: params.customer.doc_number
         })
