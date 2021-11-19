@@ -27,6 +27,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
     admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
     .then(function(result){
       const reg = result.data()
+      console.log(reg)
       if (reg.selected_prize_id) {
         console.log('--- checkpoint b 2')
         // Double check discount available on CRM
