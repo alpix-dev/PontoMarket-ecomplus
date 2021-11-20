@@ -19,7 +19,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
   if (appData.available_extra_discount) {
     response.available_extra_discount = appData.available_extra_discount
   }
-  console.log(params.storefrontId)
+  console.log(req.body)
   console.log(params.customer)
   console.log(params.customer?._id)
   if (params.customer?._id) {
