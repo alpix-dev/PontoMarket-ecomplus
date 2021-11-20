@@ -10,7 +10,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
    * Complete (advanced) example in our default discouts app:
    * https://github.com/ecomplus/discounts/blob/master/routes/ecom/modules/apply-discount.js
    */
-
+  const { storeId } = req
   const { params, application } = req.body
   const response = {}
   // merge all app options configured by merchant
@@ -23,8 +23,8 @@ exports.post = ({ appSdk, admin }, req, res) => {
   console.log(params.customer)
   console.log(params.customer?._id)
   if (params.customer?._id) {
-      console.log(`--- checkpoint prizes/${params.storefrontId}_${params.customer._id}`)
-    admin.firestore().doc(`prizes/${params.storefrontId}_${params.customer._id}`).get()
+      console.log(`--- checkpoint prizes/${storeId}_${params.customer._id}`)
+    admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
     .then(function(result){
       const reg = result.data()
       console.log(reg)
