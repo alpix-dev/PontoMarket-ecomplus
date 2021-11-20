@@ -54,7 +54,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
           })
           .catch(err => {
             console.log(JSON.stringify({
-              url,
+              crmUrl,
               resStatus: err.response?.status,
               resData: err.response?.data
             }))
