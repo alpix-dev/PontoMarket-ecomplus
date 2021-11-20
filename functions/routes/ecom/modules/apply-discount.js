@@ -41,14 +41,17 @@ exports.post = ({ appSdk, admin }, req, res) => {
             console.log(prize[0])
             if (prize[0] && prize[0].prize_value > 0) {
               console.log('--- checkpoint d')
+              let discountPrice
+              const maxDiscount = params.amount[discount.apply_at || 'total'] 
+              discountPrice = prize[0].prize_value_type == 1 ? maxDiscount * prize[0].prize_value / 100 : prize[0].prize_value
               response.discount_rule = {
                 label: prize[0].name,
                 description: `Resgate de pontos ID ${prize[0].id_prize}`,
                 extra_discount: {
-                  value: prize[0].prize_value,
-                  flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`],
-                  discount_type: prize[0].prize_value_type == 1 ? 'percentage' : 'fixed'
+                  value: discountPrice,
+                  flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`]
                 }
+              
               }
               console.log(response.discount_rule)
             }
