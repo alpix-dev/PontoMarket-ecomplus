@@ -42,7 +42,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
             if (prize[0] && prize[0].prize_value > 0) {
               console.log('--- checkpoint d')
               let discountPrice
-              const maxDiscount = params.amount[discount.apply_at || 'total'] 
+              const maxDiscount = params.amount.subtotal
               discountPrice = prize[0].prize_value_type == 1 ? maxDiscount * prize[0].prize_value / 100 : prize[0].prize_value
               response.discount_rule = {
                 label: prize[0].name,
