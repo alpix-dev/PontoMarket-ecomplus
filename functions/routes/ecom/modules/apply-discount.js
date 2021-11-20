@@ -35,18 +35,18 @@ exports.post = ({ appSdk, admin }, req, res) => {
         axios.get(crmUrl)
           .then(({ data }) => {
             console.log('--- checkpoint c')
-            console.log(data)
-            const prize = data.prize_list?.find(prize => (prize.id_prize == reg.selected_prize_id))
+            
+            const prize = data.prize_list.filter(prize => prize.id_prize == reg.selected_prize_id)
             console.log('----checkpont======')
-            console.log(prize)
-            if (prize && prize.prize_value > 0) {
+            console.log(prize[0])
+            if (prize[0] && prize[0].prize_value > 0) {
               console.log('--- checkpoint d')
               response.discount_rule = {
-                label: prize.name,
-                description: `Resgate de pontos ID ${prize.id_prize}`,
+                label: prize[0].name,
+                description: `Resgate de pontos ID ${prize[0].id_prize}`,
                 extra_discount: {
-                  value: prize.prize_value,
-                  flags: ['clube-show', `${String(prize.id_prize).slice(0, 20)}`]
+                  value: prize[0].prize_value,
+                  flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`]
                 }
               }
             }
