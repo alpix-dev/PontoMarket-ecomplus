@@ -35,7 +35,10 @@ exports.post = ({ appSdk, admin }, req, res) => {
         axios.get(crmUrl)
           .then(({ data }) => {
             console.log('--- checkpoint c')
+            console.log(data)
             const prize = data.prize_list?.find(prize => (prize.id_prize == prizeId))
+            console.log('----checkpont======')
+            console.log(prize)
             if (prize && prize.prize_value > 0) {
               console.log('--- checkpoint d')
               response.discount_rule = {
