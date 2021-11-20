@@ -49,8 +49,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
                   flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`]
                 }
               }
+              console.log(response)
             }
-            //res.send(response)
+            res.send(response)
           })
           .catch(err => {
             console.log(JSON.stringify({
