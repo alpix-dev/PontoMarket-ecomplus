@@ -49,7 +49,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                   flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`]
                 }
               }
-              console.log(response)
+              console.log(response.discount_rule)
             }
             res.send(response)
           })
