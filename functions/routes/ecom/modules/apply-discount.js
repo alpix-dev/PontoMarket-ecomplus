@@ -1,3 +1,4 @@
+const axios = require('axios')
 exports.post = ({ appSdk, admin }, req, res) => {
   /**
    * Requests coming from Modules API have two object properties on body: `params` and `application`.
