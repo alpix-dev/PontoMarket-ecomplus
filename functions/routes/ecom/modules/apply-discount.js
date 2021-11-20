@@ -11,7 +11,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
    * https://github.com/ecomplus/discounts/blob/master/routes/ecom/modules/apply-discount.js
    */
 
-  const { params, application, storeId } = req.body
+  const { params, application } = req.body
   const response = {}
   // merge all app options configured by merchant
   const appData = Object.assign({}, application.data, application.hidden_data)
@@ -23,8 +23,8 @@ exports.post = ({ appSdk, admin }, req, res) => {
   console.log(params.customer)
   console.log(params.customer?._id)
   if (params.customer?._id) {
-      console.log(`--- checkpoint prizes/${storeId}_${params.customer._id}`)
-    admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
+      console.log(`--- checkpoint prizes/${params.storeId}_${params.customer._id}`)
+    admin.firestore().doc(`prizes/${params.storeId}_${params.customer._id}`).get()
     .then(function(result){
       const reg = result.data()
       console.log(reg)
