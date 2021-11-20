@@ -46,7 +46,8 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 description: `Resgate de pontos ID ${prize[0].id_prize}`,
                 extra_discount: {
                   value: prize[0].prize_value,
-                  flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`]
+                  flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`],
+                  discount_type: prize[0].prize_value_type == 1 ? 'percentage' : 'fixed'
                 }
               }
               console.log(response.discount_rule)
