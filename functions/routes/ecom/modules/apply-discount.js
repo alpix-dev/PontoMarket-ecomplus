@@ -19,12 +19,12 @@ exports.post = ({ appSdk, admin }, req, res) => {
   if (appData.available_extra_discount) {
     response.available_extra_discount = appData.available_extra_discount
   }
-  console.log(params.storeId)
+  console.log(params.storefrontId)
   console.log(params.customer)
   console.log(params.customer?._id)
   if (params.customer?._id) {
-      console.log(`--- checkpoint prizes/${params.storeId}_${params.customer._id}`)
-    admin.firestore().doc(`prizes/${params.storeId}_${params.customer._id}`).get()
+      console.log(`--- checkpoint prizes/${params.storefrontId}_${params.customer._id}`)
+    admin.firestore().doc(`prizes/${params.storefrontId}_${params.customer._id}`).get()
     .then(function(result){
       const reg = result.data()
       console.log(reg)
@@ -64,7 +64,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
           })
       }      
     })
-    // admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get(documentSnapshot => {
+    // admin.firestore().doc(`prizes/${storefrontId}_${params.customer._id}`).get(documentSnapshot => {
     //   console.log('--- checkpoint b')
     //   if (documentSnapshot.exist) {
     //     console.log('--- checkpoint b 1')
