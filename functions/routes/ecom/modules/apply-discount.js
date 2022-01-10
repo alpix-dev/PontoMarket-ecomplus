@@ -22,7 +22,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
   }
  
   if (params.customer?._id) {
-      console.log(`--- checkpoint prizes/${storeId}_${params.customer._id}`)
+    //console.log(`--- checkpoint prizes/${storeId}_${params.customer._id}`)
     admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
     .then(function(result){
       const reg = result.data()
@@ -34,13 +34,13 @@ exports.post = ({ appSdk, admin }, req, res) => {
         //const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=43335443608&id_location=`
         axios.get(crmUrl)
           .then(({ data }) => {
-            console.log('--- checkpoint c')
+            //console.log('--- checkpoint c')
             
             const prize = data.prize_list.filter(prize => prize.id_prize == reg.selected_prize_id)
-            console.log('----checkpont======')
+            //console.log('----checkpont======')
             console.log(prize[0])
             if (prize[0] && prize[0].prize_value > 0) {
-              console.log('--- checkpoint d')
+              //  console.log('--- checkpoint d')
               let discountPrice
               const maxDiscount = params.amount.subtotal
               discountPrice = prize[0].prize_value_type == 1 ? maxDiscount * prize[0].prize_value / 100 : prize[0].prize_value
