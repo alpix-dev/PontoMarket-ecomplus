@@ -1,8 +1,10 @@
 const axios = require('axios')
-const getAppData = require('./../../lib/store-api/get-app-data')
+const getAppData = require('../../lib/store-api/get-app-data')
 
 exports.post = ({ appSdk, admin }, req, res) => {  
-  const { storeId, params } = req.body
+  const { storeId } = req
+  const { params } = req.body
+  console.log(JSON.stringify(params))
   getAppData({ appSdk, storeId }).then(appData => {
     if (appData.instancia) {      
       admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
