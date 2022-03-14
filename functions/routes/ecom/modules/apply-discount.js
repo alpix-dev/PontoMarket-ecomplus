@@ -53,7 +53,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 }
               
               }
-              console.log(response.discount_rule)
+              //console.log(response.discount_rule)
             }
             res.send(response)
           })
