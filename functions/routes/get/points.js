@@ -7,7 +7,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
   getAppData({ appSdk, storeId }).then(appData => {
     if (appData.instancia) {
       const url = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=${params.customer.doc_number}&id_location=${appData.location_id}`
-      console.log(url)
+      //console.log(url)
       axios.get(url)
         .then(({ data }) => {
           admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
