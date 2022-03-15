@@ -33,11 +33,15 @@ exports.post = ({ appSdk }, req, res) => {
 
       /* DO YOUR CUSTOM STUFF HERE */
 
-      if (appData.instancia && trigger.resource === 'orders' && trigger.action === 'create') {   
-        appSdk.getAuth(storeId).then( authorization => {
+      if (appData.instancia && trigger.resource === 'orders' && trigger.action === 'create') {
+        return appSdk.getAuth(storeId).then(authorization => {
           appSdk.apiRequest(storeId, `orders/${resourceId}.json`, 'GET', null, authorization)
           .then(({ order }) => {
-            admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
+            const customerId = order.buyers && order.buyers[0] && order.buyers[0]._id
+            if (!customerId) {
+              return res.sendStatus(204)
+            }
+            admin.firestore().doc(`prizes/${storeId}_${customerId}`).get()
             .then(function(result){
               const reg = result.data()
               let prize_id = reg.selected_prize_id
@@ -46,10 +50,10 @@ exports.post = ({ appSdk }, req, res) => {
                 const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=points_redemption&cpf=${docNumber}&order=${order}&id_prize=${prize_id}`
                 axios.get(crmUrl)
                   .then(({ data }) => {
-                    admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).delete()
+                    admin.firestore().doc(`prizes/${storeId}_${customerId}`).delete()
                     .then(function(){
                       res.status(200).send({
-                        prize: params.customer._id + ' - ' + prize_id,
+                        prize: customerId + ' - ' + prize_id,
                         message: 'success'
                       })
                     })
@@ -77,8 +81,6 @@ exports.post = ({ appSdk }, req, res) => {
             })
           }) 
         })
-          
-        
       }
 
       // all done
