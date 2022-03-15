@@ -26,7 +26,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
     admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
     .then(function(result){
       const reg = result.data()
-      console.log(reg)
+      //console.log(reg)
       if (reg.selected_prize_id) {
         // Double check discount available on CRM
         const docNumber = reg.doc_number
@@ -38,7 +38,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
             
             const prize = data.prize_list.filter(prize => prize.id_prize == reg.selected_prize_id)
             //console.log('----checkpont======')
-            console.log(prize[0])
+            //console.log(prize[0])
             if (prize[0] && prize[0].prize_value > 0) {
               //  console.log('--- checkpoint d')
               let discountPrice
@@ -58,11 +58,11 @@ exports.post = ({ appSdk, admin }, req, res) => {
             res.send(response)
           })
           .catch(err => {
-            console.log(JSON.stringify({
-              crmUrl,
-              resStatus: err.response?.status,
-              resData: err.response?.data
-            }))
+            // console.log(JSON.stringify({
+            //   crmUrl,
+            //   resStatus: err.response?.status,
+            //   resData: err.response?.data
+            // }))
             res.status(409).send({
               error: '1',
               message: err.message

@@ -6,7 +6,7 @@ const ECHO_SUCCESS = 'SUCCESS'
 const ECHO_SKIP = 'SKIP'
 const ECHO_API_ERROR = 'STORE_API_ERR'
 
-exports.post = ({ appSdk }, req, res) => {
+exports.post = ({ appSdk, admin }, req, res) => {
   // receiving notification from Store API
   const { storeId } = req
 
@@ -15,74 +15,23 @@ exports.post = ({ appSdk }, req, res) => {
    * Ref.: https://developers.e-com.plus/docs/api/#/store/triggers/
    */
   const trigger = req.body
-  const resourceId = trigger.resource_id || trigger.inserted_id
-  //console.log(JSON.stringify(trigger))
+
   // get app configured options
   getAppData({ appSdk, storeId })
 
     .then(appData => {
-      if (
-        Array.isArray(appData.ignore_triggers) &&
-        appData.ignore_triggers.indexOf(trigger.resource) > -1
-      ) {
-        // ignore current trigger
-        const err = new Error()
-        err.name = SKIP_TRIGGER_NAME
-        throw err
-      }
+      // if (
+      //   Array.isArray(appData.ignore_triggers) &&
+      //   appData.ignore_triggers.indexOf(trigger.resource) > -1
+      // ) {
+      //   // ignore current trigger
+      //   const err = new Error()
+      //   err.name = SKIP_TRIGGER_NAME
+      //   throw err
+      // }
 
       /* DO YOUR CUSTOM STUFF HERE */
-
-      if (appData.instancia && trigger.resource === 'orders' && trigger.action === 'create') {
-        return appSdk.getAuth(storeId).then(authorization => {
-          appSdk.apiRequest(storeId, `orders/${resourceId}.json`, 'GET', null, authorization)
-          .then(({ order }) => {
-            const customerId = order.buyers && order.buyers[0] && order.buyers[0]._id
-            if (!customerId) {
-              return res.sendStatus(204)
-            }
-            admin.firestore().doc(`prizes/${storeId}_${customerId}`).get()
-            .then(function(result){
-              const reg = result.data()
-              let prize_id = reg.selected_prize_id
-              if (reg.selected_prize_id) {
-                const docNumber = reg.doc_number
-                const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=points_redemption&cpf=${docNumber}&order=${order}&id_prize=${prize_id}`
-                axios.get(crmUrl)
-                  .then(({ data }) => {
-                    admin.firestore().doc(`prizes/${storeId}_${customerId}`).delete()
-                    .then(function(){
-                      res.status(200).send({
-                        prize: customerId + ' - ' + prize_id,
-                        message: 'success'
-                      })
-                    })
-                  })
-                  .catch(err => {
-                    console.log(JSON.stringify({
-                      crmUrl,
-                      resStatus: err.response?.status,
-                      resData: err.response?.data
-                    }))
-                    res.status(409).send({
-                      error: '1',
-                      message: err.message
-                    })
-                  })
-              }      
-            })
-          })
-          .catch((err) => {
-            res.status(500)
-            const { message } = err
-            res.send({
-              error: ECHO_API_ERROR,
-              message
-            })
-          }) 
-        })
-      }
-
+      console.log('test')
       // all done
       res.send(ECHO_SUCCESS)
     })

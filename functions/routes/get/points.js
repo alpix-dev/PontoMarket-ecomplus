@@ -17,11 +17,11 @@ exports.post = ({ appSdk, admin }, req, res) => {
           
         })
         .catch(err => {
-          console.log(JSON.stringify({
-            url,
-            resStatus: err.response?.status,
-            resData: err.response?.data
-          }))
+          // console.log(JSON.stringify({
+          //   url,
+          //   resStatus: err.response?.status,
+          //   resData: err.response?.data
+          // }))
           res.send(err.message)
         })
     }
