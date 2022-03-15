@@ -21,11 +21,19 @@
     "products": [],
     "brands": [],
     "categories": [],
-    "customers": [],
-    "orders": [],
+    "customers": [
+      "GET"
+    ],
+    "orders": [
+      "GET"
+    ],
     "carts": [],
-    "orders/fulfillments": [],
-    "orders/payments_history": [],
+    "orders/fulfillments": [
+      "GET"
+    ],
+    "orders/payments_history": [
+      "GET"
+    ],
     "products/quantity": [],
     "products/variations/quantity": [],
     "products/price": [],
