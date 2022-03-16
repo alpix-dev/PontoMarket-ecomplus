@@ -266,7 +266,7 @@ procedures.push({
     {
       api: {
         external_api: {
-          uri: `${baseUri}/webhooks/redeemPoints`
+          uri: `${baseUri}/ecom/webhook`
         }
       },
       method: 'POST'
