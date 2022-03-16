@@ -226,13 +226,17 @@ procedures.push({
 
   triggers: [
     // Receive notifications order new or edited with financial/fulfillment status:
+    // {
+    //   resource: 'orders',
+    //   field: 'financial_status',
+    // },
+    // {
+    //   resource: 'orders',
+    //   field: 'fulfillment_status',
+    // },
     {
       resource: 'orders',
-      field: 'financial_status',
-    },
-    {
-      resource: 'orders',
-      field: 'fulfillment_status',
+      field: 'status',
     },
 
     /* Receive notifications when products/variations stock quantity changes:
