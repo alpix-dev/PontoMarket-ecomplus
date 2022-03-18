@@ -236,7 +236,7 @@ procedures.push({
     // },
     {
       resource: 'orders',
-      field: 'status',
+      action: 'create'
     },
 
     /* Receive notifications when products/variations stock quantity changes:

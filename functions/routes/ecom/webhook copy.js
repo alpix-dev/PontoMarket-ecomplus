@@ -43,12 +43,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
             console.log('a')
             console.log(`orders/${resourceId}.json`)
             authorization = auth
-            return getAppData({ appSdk, storeId, autorization })
-          })
-          .then( appData => {
-            return appSdk.apiRequest(storeId, `orders/${resourceId}.json`, 'GET', null, authorization)
-          })
-          .then(order => {
+          console.log(JSON.stringify(autorization))
+          appSdk.apiRequest(storeId, `orders/${resourceId}.json`, 'GET', null, authorization)
+          .then(({ order }) => {
             console.log('b')
             console.log(JSON.stringify(order))
             const customerId = order.buyers && order.buyers[0] && order.buyers[0]._id
@@ -95,15 +92,16 @@ exports.post = ({ appSdk, admin }, req, res) => {
               }      
             })
           })
-          .catch((err) => {
-            console.log('i')
-            res.status(500)
-            const { message } = err
-            res.send({
-              error: ECHO_API_ERROR,
-              message
-            })
-          }) 
+        })
+        .catch((err) => {
+          console.log('i')
+          res.status(500)
+          const { message } = err
+          res.send({
+            error: ECHO_API_ERROR,
+            message
+          })
+        }) 
       }
 
       // all done
