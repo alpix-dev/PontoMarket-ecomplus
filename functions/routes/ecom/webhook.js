@@ -16,72 +16,92 @@ exports.post = ({ appSdk, admin }, req, res) => {
    */
   const trigger = req.body
   const resourceId = trigger.resource_id || trigger.inserted_id
-  //console.log(JSON.stringify(trigger))
-  // get app configured options
-  //console.log('Checkpoint 1.')
-  getAppData({ appSdk, storeId })
-    .then(appData => {
-      if (
-        Array.isArray(appData.ignore_triggers) &&
-        appData.ignore_triggers.indexOf(trigger.resource) > -1
-      ) {
-        // ignore current trigger
-        const err = new Error()
+  
+  getAppData({ appSdk, storeId }).then(appData => {
+      if (!appData.instancia || !appData.id || !appData.token || !appData.location_id || trigger.resource !== 'orders') {
+        const err = new Error('Denied')
         err.name = SKIP_TRIGGER_NAME
         throw err
       }
-
-      /* DO YOUR CUSTOM STUFF HERE */
-      //console.log(storeId)
-      //console.log('XXX')
-      console.log(JSON.stringify(trigger))
-      //if (appData.instancia && trigger.resource === 'orders' && trigger.action === 'create') {
-      if (appData.instancia && trigger.resource === 'orders') {
-        let autorization
-        appSdk.getAuth(storeId)
-          .then(auth => {
-            console.log('a')
-            console.log(`orders/${resourceId}.json`)
-            authorization = auth
-            return getAppData({ appSdk, storeId, autorization })
-          })
-          .then( appData => {
-            return appSdk.apiRequest(storeId, `orders/${resourceId}.json`, 'GET', null, authorization)
-          })
-          .then(order => {
-            console.log('b')
-            console.log(JSON.stringify(order))
-            const customerId = order.buyers && order.buyers[0] && order.buyers[0]._id
-            if (!customerId) {
-              console.log('c')
-              return res.sendStatus(204)
-            }
-            console.log(customerId)
-            admin.firestore().doc(`prizes/${storeId}_${customerId}`).get()
-            .then(function(result){
-              console.log('d')
-              const reg = result.data()
-              let prize_id = reg.selected_prize_id
-              if (reg.selected_prize_id) {
-                console.log('e')
-                const docNumber = reg.doc_number
-                
-                const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=points_redemption&cpf=${docNumber}&order=${order}&id_prize=${prize_id}`
-                console.log(crmUrl)
-                axios.get(crmUrl)
-                .then(({ data }) => {
-                  console.log('f')
-                  admin.firestore().doc(`prizes/${storeId}_${customerId}`).delete()
-                  .then(function(){
-                    console.log('g')
-                    res.status(200).send({
-                      prize: customerId + ' - ' + prize_id,
-                      message: 'success'
-                    })
+      appSdk.getAuth(storeId).then((auth) => {
+        appSdk.apiRequest(storeId, `/orders/${resourceId}.json`,'GET',null, auth).then(({response}) => {
+          const order = response.data
+          //console.log(order)
+          const customerId = order.buyers && order.buyers[0] && order.buyers[0]._id
+          if (!customerId) {
+            return res.sendStatus(204)
+          }
+          if (trigger.resource === 'orders' && trigger.body.status === 'cancelled') {
+            if(order.extra_discount){
+              let joinDiscount = order.extra_discount.join()
+              let regExp = /\[id_debit:(.*?)\]/;
+              let match = regExp.exec(joinDiscount)
+              let docNumber = order.buyers && order.buyers[0] && order.buyers[0].doc_number
+              if(match[1]){
+                const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=cancel_redemption&cpf=${docNumber}&id_debit=${match[1]}`
+                axios.get(crmUrl).then(({ data }) => {
+                  console.log({
+                    customer : docNumber,
+                    id_debit: match[1],
+                    message: 'success'
                   })
+                  res.status(200).send({
+                    customer : docNumber,
+                    id_debit: match[1],
+                    message: 'success'
+                  })            
                 })
                 .catch(err => {
-                  console.log('h')
+                  console.log(JSON.stringify({
+                    crmUrl,
+                    resStatus: err.response?.status,
+                    resData: err.response?.data
+                  }))
+                  res.status(409).send({
+                    error: '1',
+                    message: err.message
+                  })
+                })
+              }                           
+            }
+          }else{
+            admin.firestore().doc(`prizes/${storeId}_${customerId}`).get().then(function(result){
+              const reg = result.data()
+              let prize_id = reg.selected_prize_id
+              if (reg.selected_prize_id && reg.selected_prize_id !== -1) {
+                const docNumber = reg.doc_number              
+                const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=points_redemption&cpf=${docNumber}&order=${order}&id_prize=${prize_id}`
+                axios.get(crmUrl).then(({ data }) => {
+                  console.log(data)
+                  let id_debit = data.id_debit
+                  order.extra_discount.flags.push('[id_debit:' + id_debit + ']')
+                  const body = { extra_discount :  order.extra_discount}
+                  console.log(body)
+                  //atualiza pedido
+                  appSdk.apiRequest(storeId, `/orders/${resourceId}.json`,'PATCH',body, auth)
+                  .then(({ response }) => {
+                    console.log('api-request')
+                    admin.firestore().doc(`prizes/${storeId}_${customerId}`).delete().then(function(){
+                      console.log('firestore remove')
+                      res.status(200).send({
+                        prize: customerId + ' - ' + prize_id,
+                        message: 'success'
+                      })
+                    })
+                    .catch(err => {
+                      console.log(customerId + ' - ' + resourceId)
+                      console.log(err)
+                    })
+                  }).catch(err => {
+                    res.status(500)
+                    const { message } = err
+                    res.send({
+                      error: ECHO_API_ERROR,
+                      message
+                    })
+                  })                  
+                })
+                .catch(err => {
                   console.log(JSON.stringify({
                     crmUrl,
                     resStatus: err.response?.status,
@@ -94,25 +114,17 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 })
               }      
             })
-          })
-          .catch((err) => {
-            console.log('i')
-            res.status(500)
-            const { message } = err
-            res.send({
-              error: ECHO_API_ERROR,
-              message
-            })
-          }) 
-      }
-
-      // all done
-      //res.send(ECHO_SUCCESS)
+          }
+        })
+        .catch( err => {
+          console.log(err)
+        })     
+      })
+      .catch( err => {
+        console.log(err)
+      })    
     })
-
     .catch(err => {
-      console.log('Checkpoint 3.')
-      console.log(err)
       if (err.name === SKIP_TRIGGER_NAME) {
         // trigger ignored by app configuration
         res.send(ECHO_SKIP)

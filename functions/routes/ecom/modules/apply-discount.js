@@ -26,8 +26,8 @@ exports.post = ({ appSdk, admin }, req, res) => {
     admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
     .then(function(result){
       const reg = result.data()
-      //console.log(reg)
-      if (reg.selected_prize_id) {
+      console.log(reg)
+      if (reg.selected_prize_id && reg.selected_prize_id !== -1) {
         // Double check discount available on CRM
         const docNumber = reg.doc_number
         const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=${docNumber}&id_location=`
@@ -48,8 +48,8 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 label: prize[0].name,
                 description: `Resgate de pontos ID ${prize[0].id_prize}`,
                 extra_discount: {
-                  value: discountPrice,
-                  flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`]
+                  value: (discountPrice > maxDiscount ? maxDiscount : discountPrice),
+                  flags: ['clube-show', `${String(prize[0].id_prize).slice(0, 20)}`, `points|${String(prize[0].points_required)}`]
                 }
               
               }
@@ -68,7 +68,12 @@ exports.post = ({ appSdk, admin }, req, res) => {
               message: err.message
             })
           })
-      }      
+      }else{
+        res.status(409).send({
+          error: '2',
+          message: 'Não deseja resgatar pontos'
+        })
+      }     
     })
     // admin.firestore().doc(`prizes/${storefrontId}_${params.customer._id}`).get(documentSnapshot => {
     //   console.log('--- checkpoint b')
