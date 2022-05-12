@@ -33,7 +33,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
           }
           if (trigger.resource === 'orders' && trigger.body.status === 'cancelled') {
             if(order.extra_discount){
-              let joinDiscount = order.extra_discount.join()
+              let joinDiscount = order.extra_discount.flags.join()
               let regExp = /\[id_debit:(.*?)\]/;
               let match = regExp.exec(joinDiscount)
               let docNumber = order.buyers && order.buyers[0] && order.buyers[0].doc_number
@@ -72,11 +72,11 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 const docNumber = reg.doc_number              
                 const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=points_redemption&cpf=${docNumber}&order=${order}&id_prize=${prize_id}`
                 axios.get(crmUrl).then(({ data }) => {
-                  console.log(data)
+                  //console.log(data)
                   let id_debit = data.id_debit
                   order.extra_discount.flags.push('[id_debit:' + id_debit + ']')
                   const body = { extra_discount :  order.extra_discount}
-                  console.log(body)
+                  //console.log(body)
                   //atualiza pedido
                   appSdk.apiRequest(storeId, `/orders/${resourceId}.json`,'PATCH',body, auth)
                   .then(({ response }) => {
@@ -93,6 +93,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                       console.log(err)
                     })
                   }).catch(err => {
+                    console.log(err)
                     res.status(500)
                     const { message } = err
                     res.send({

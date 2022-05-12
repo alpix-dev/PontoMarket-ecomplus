@@ -25,7 +25,8 @@
       "GET"
     ],
     "orders": [
-      "GET"
+      "GET",
+      "PATCH"
     ],
     "carts": [],
     "orders/fulfillments": [
