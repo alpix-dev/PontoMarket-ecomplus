@@ -78,29 +78,29 @@ exports.post = ({ appSdk, admin }, req, res) => {
                   const body = { extra_discount :  order.extra_discount}
                   //console.log(body)
                   //atualiza pedido
-                  appSdk.apiRequest(storeId, `/orders/${resourceId}.json`,'PATCH',body, auth)
-                  .then(({ response }) => {
-                    console.log('api-request')
-                    admin.firestore().doc(`prizes/${storeId}_${customerId}`).delete().then(function(){
-                      console.log('firestore remove')
+                  admin.firestore().doc(`prizes/${storeId}_${customerId}`).delete().then(function(){
+                    //console.log('firestore remove - customer:' + customerId)
+                    appSdk.apiRequest(storeId, `/orders/${resourceId}.json`,'PATCH',body, auth).then(({ response }) => {
+                      console.log('PATCH id_debit - order:' + resourceId)
                       res.status(200).send({
-                        prize: customerId + ' - ' + prize_id,
-                        message: 'success'
+                        error : false
+                      })  
+                    }).catch(err => {
+                      console.log('PATCH ERR - ' + resourceId)
+                      console.log(JSON.stringify(err))
+                      res.status(500)
+                      const { message } = err
+                      res.send({
+                        error: ECHO_API_ERROR,
+                        message
                       })
-                    })
-                    .catch(err => {
-                      console.log(customerId + ' - ' + resourceId)
-                      console.log(err)
-                    })
-                  }).catch(err => {
+                    })                       
+                  })
+                  .catch(err => {
+                    console.log(customerId + ' - ' + resourceId)
                     console.log(err)
-                    res.status(500)
-                    const { message } = err
-                    res.send({
-                      error: ECHO_API_ERROR,
-                      message
-                    })
-                  })                  
+                  })
+                                 
                 })
                 .catch(err => {
                   console.log(JSON.stringify({
