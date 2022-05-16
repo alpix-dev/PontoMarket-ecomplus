@@ -31,10 +31,11 @@ exports.post = ({ appSdk, admin }, req, res) => {
           if (!customerId) {
             return res.sendStatus(204)
           }
+          console.log(resourceId + ' --' + trigger.body.status)
           if (trigger.resource === 'orders' && trigger.body.status === 'cancelled') {
             if(order.extra_discount){
               let joinDiscount = order.extra_discount.flags.join()
-              let regExp = /\[id_debit:(.*?)\]/;
+              let regExp = /\[d:(.*?)\]/;
               let match = regExp.exec(joinDiscount)
               let docNumber = order.buyers && order.buyers[0] && order.buyers[0].doc_number
               if(match[1]){
@@ -74,7 +75,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 axios.get(crmUrl).then(({ data }) => {
                   //console.log(data)
                   let id_debit = data.id_debit
-                  order.extra_discount.flags.push('[id_debit:' + id_debit + ']')
+                  order.extra_discount.flags.push('[d:' + id_debit + ']')
                   const body = { extra_discount :  order.extra_discount}
                   //console.log(body)
                   //atualiza pedido

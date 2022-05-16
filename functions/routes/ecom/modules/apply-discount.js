@@ -25,9 +25,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
     //console.log(`--- checkpoint prizes/${storeId}_${params.customer._id}`)
     admin.firestore().doc(`prizes/${storeId}_${params.customer._id}`).get()
     .then(function(result){
-      const reg = result.data()
-      console.log(reg)
-      if (reg.selected_prize_id && reg.selected_prize_id !== -1) {
+      const reg = result && result.data()
+      //console.log(reg)
+      if (reg && reg.selected_prize_id && reg.selected_prize_id !== -1) {
         // Double check discount available on CRM
         const docNumber = reg.doc_number
         const crmUrl = `${appData.instancia}/cgi-bin/webworks/bin/sharkview_api_v1?id=${appData.id}&token=${appData.token}&cmd=get_points&cpf=${docNumber}&id_location=`
